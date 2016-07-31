@@ -8,7 +8,7 @@ const request = Promise.promisify(require('request'));
 const fs = Promise.promisifyAll(require('fs'));
 
 const url = process.argv[2] || 'https://www.reddit.com/r/hardwareswap/comments/4viicr/meta_giveaway_cooler_master_hyper_212_evo_x2_moto.json';
-const find = process.argv[3] || '#\s*1';
+const find = process.argv[3] || '#1';
 
 const READ_LOCALLY = false;
 const MUST_HAVE_FLAIR = true;
@@ -50,7 +50,9 @@ function filterComments(comments) {
 	const entries = {};
 	const regex = new RegExp(find, 'i');
 	comments.forEach(comment => {
-		if (regex.test(comment.body) && (!MUST_HAVE_FLAIR || comment['author_flair_css_class'])) {
+		// Strip all spaces
+		const body = comment.body.replace(/\s+/g, '');
+		if (regex.test(body) && (!MUST_HAVE_FLAIR || comment['author_flair_css_class'])) {
 			entries[comment.author] = 1;
 		}
 	});
