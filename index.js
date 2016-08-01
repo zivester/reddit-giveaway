@@ -21,6 +21,8 @@ if (MUST_HAVE_FLAIR) {
 
 
 function getJson(url) {
+	// API is limited to ~200 entries with the defaults
+	url = `${url}?limit=1000`;
 	return request(url).then(res => {
 		if (res.statusCode !== 200) {
 			throw new Error(`uh oh, something went wrong: ${res.statusCode}`);
